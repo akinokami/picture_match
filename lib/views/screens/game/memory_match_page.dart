@@ -20,7 +20,9 @@ class MemoryMatchPage extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: ((context, constraints) {
-            if (constraints.maxWidth > 720) {
+            print(constraints.maxWidth);
+            if (constraints.maxWidth > 800) {
+              //720
               return GameBoard(
                 gameLevel: gameLevel,
                 gameType: gameType,

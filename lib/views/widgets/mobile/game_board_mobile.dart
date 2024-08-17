@@ -196,6 +196,7 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomCard(
                       width: 1.sw * 0.40,
@@ -218,7 +219,7 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
                       pauseGame: () => pauseTimer(),
                       restartGame: () => _resetGame(),
                       continueGame: () => startTimer(),
-                      color: Colors.amberAccent[700]!,
+                      color: AppTheme.green, //Colors.amberAccent[700]!,
                     ),
                     GameTimerMobile(
                       time: duration,

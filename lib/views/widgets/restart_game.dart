@@ -11,7 +11,7 @@ class RestartGame extends StatelessWidget {
     required this.pauseGame,
     required this.restartGame,
     required this.continueGame,
-    this.color = Colors.white,
+    this.color = Colors.green,
     super.key,
   });
 
