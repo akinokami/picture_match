@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:picture_match/language/languages.dart';
-import 'package:picture_match/utils/app_theme.dart';
 import 'package:picture_match/views/screens/splash_screen.dart';
 import 'utils/global.dart';
 

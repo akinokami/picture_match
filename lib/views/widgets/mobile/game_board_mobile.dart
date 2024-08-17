@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:picture_match/views/widgets/game_confetti.dart';
 import 'package:picture_match/views/widgets/memory_card.dart';
 import 'package:picture_match/views/widgets/mobile/game_best_time_mobile.dart';

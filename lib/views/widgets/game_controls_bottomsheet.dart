@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:picture_match/views/widgets/game_button.dart';
 
 import '../../utils/constants.dart';
-import '../screens/game/startup_page.dart';
 
 class GameControlsBottomSheet extends StatelessWidget {
   const GameControlsBottomSheet({

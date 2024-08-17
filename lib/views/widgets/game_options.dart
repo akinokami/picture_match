@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picture_match/controller/game_option_controller.dart';
-import 'package:picture_match/models/game.dart';
 import 'package:picture_match/utils/constants.dart';
 import 'package:picture_match/views/widgets/game_button.dart';
 import '../../utils/app_theme.dart';
