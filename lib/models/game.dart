@@ -12,8 +12,9 @@ class Game {
   final int gridSize;
 
   List<CardItem> cards = [];
-  bool isGameOver = false;
+  bool isGameFinish = false;
   Set<IconData> icons = {};
+  bool isGameOver = false;
 
   void generateCards() {
     generateIcons();
@@ -61,6 +62,7 @@ class Game {
 
   void resetGame() {
     generateCards();
+    isGameFinish = false;
     isGameOver = false;
   }
 
@@ -73,7 +75,7 @@ class Game {
       if (card1.value == card2.value) {
         card1.state = CardState.guessed;
         card2.state = CardState.guessed;
-        isGameOver = _isGameOver();
+        isGameFinish = _isGameOver();
       } else {
         Future.delayed(const Duration(milliseconds: 1000), () {
           card1.state = CardState.hidden;

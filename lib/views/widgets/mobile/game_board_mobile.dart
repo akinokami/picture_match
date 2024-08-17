@@ -1,28 +1,31 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:picture_match/controller/game_option_controller.dart';
 import 'package:picture_match/utils/constants.dart';
+import 'package:picture_match/views/widgets/custom_card.dart';
+import 'package:picture_match/views/widgets/custom_text.dart';
 import 'package:picture_match/views/widgets/game_confetti.dart';
-import 'package:picture_match/views/widgets/game_controls_bottomsheet.dart';
 import 'package:picture_match/views/widgets/memory_card.dart';
-import 'package:picture_match/views/widgets/mobile/game_best_time_mobile.dart';
 import 'package:picture_match/views/widgets/mobile/game_timer_mobile.dart';
 import 'package:picture_match/views/widgets/restart_game.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/game.dart';
+import '../../../utils/app_theme.dart';
 
 class GameBoardMobile extends StatefulWidget {
   const GameBoardMobile({
     required this.gameLevel,
     required this.gameType,
+    required this.limitTime,
     super.key,
   });
 
   final int gameLevel;
   final String gameType;
+  final int limitTime;
 
   @override
   State<GameBoardMobile> createState() => _GameBoardMobileState();
@@ -35,7 +38,6 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
   late Duration duration;
   int bestTime = 0;
   bool showConfetti = false;
-  //final box = GetStorage();
 
   @override
   void initState() {
@@ -81,8 +83,21 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
         final seconds = duration.inSeconds + 1;
         duration = Duration(seconds: seconds);
       });
+
+      if (widget.limitTime != 0) {
+        if (duration.inSeconds >= widget.limitTime) {
+          timer.cancel();
+          game.isGameOver = true;
+          print("gameOver");
+          constants.gameOverDialog(() {
+            _resetGame();
+            Navigator.pop(context);
+          });
+        }
+      }
+
       //todo
-      if (game.isGameOver) {
+      if (game.isGameFinish) {
         timer.cancel();
         // SharedPreferences gameSP = await SharedPreferences.getInstance();
         // if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
@@ -162,45 +177,87 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
   Widget build(BuildContext context) {
     final aspectRatio = MediaQuery.of(context).size.aspectRatio;
 
-    return SafeArea(
-      child: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              RestartGame(
-                isGameOver: game.isGameOver,
-                pauseGame: () => pauseTimer(),
-                restartGame: () => _resetGame(),
-                continueGame: () => startTimer(),
-                color: Colors.amberAccent[700]!,
-              ),
-              GameTimerMobile(
-                time: duration,
-              ),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: game.gridSize,
-                  childAspectRatio: aspectRatio * 2,
-                  children: List.generate(game.cards.length, (index) {
-                    return MemoryCard(
-                      index: index,
-                      card: game.cards[index],
-                      onCardPressed: game.onCardPressed,
-                    );
-                  }),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppTheme.white,
+        iconTheme: const IconThemeData(color: AppTheme.black),
+        centerTitle: true,
+        title: CustomText(
+          text: ''.tr,
+          size: 15.sp,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    CustomCard(
+                      width: 1.sw * 0.40,
+                      widget: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(text: 'best_time'.tr),
+                          CustomText(
+                            text: Duration(seconds: bestTime)
+                                .toString()
+                                .split('.')
+                                .first
+                                .padLeft(8, "0"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RestartGame(
+                      isGameOver: game.isGameFinish,
+                      pauseGame: () => pauseTimer(),
+                      restartGame: () => _resetGame(),
+                      continueGame: () => startTimer(),
+                      color: Colors.amberAccent[700]!,
+                    ),
+                    GameTimerMobile(
+                      time: duration,
+                    ),
+                  ],
                 ),
-              ),
-              GameBestTimeMobile(
-                bestTime: bestTime,
-              ),
-            ],
-          ),
-          showConfetti ? const GameConfetti() : const SizedBox(),
-        ],
+                SizedBox(height: 10.h),
+                // RestartGame(
+                //   isGameOver: game.isGameFinish,
+                //   pauseGame: () => pauseTimer(),
+                //   restartGame: () => _resetGame(),
+                //   continueGame: () => startTimer(),
+                //   color: Colors.amberAccent[700]!,
+                // ),
+                // GameTimerMobile(
+                //   time: duration,
+                // ),
+                Expanded(
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: game.gridSize,
+                    childAspectRatio: aspectRatio * 2,
+                    children: List.generate(game.cards.length, (index) {
+                      return MemoryCard(
+                        index: index,
+                        card: game.cards[index],
+                        onCardPressed: game.onCardPressed,
+                      );
+                    }),
+                  ),
+                ),
+                // GameBestTimeMobile(
+                //   bestTime: bestTime,
+                // ),
+              ],
+            ),
+            showConfetti ? const GameConfetti() : const SizedBox(),
+          ],
+        ),
       ),
     );
   }

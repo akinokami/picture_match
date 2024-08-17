@@ -8,14 +8,17 @@ import '../screens/game/memory_match_page.dart';
 
 class GameOptions extends StatelessWidget {
   final String gameType;
+
   const GameOptions({super.key, required this.gameType});
 
-  Route<dynamic> _routeBuilder(BuildContext context, int gameLevel) {
+  Route<dynamic> _routeBuilder(
+      BuildContext context, int gameLevel, int limitTime) {
     return MaterialPageRoute(
       builder: (_) {
         return MemoryMatchPage(
           gameLevel: gameLevel,
           gameType: gameType,
+          limitTime: limitTime,
         );
       },
     );
@@ -45,7 +48,11 @@ class GameOptions extends StatelessWidget {
                                         context,
                                         gameOptionController
                                                 .gameEasyLevels[index].level ??
-                                            1),
+                                            1,
+                                        gameOptionController
+                                                .gameEasyLevels[index]
+                                                .limitTime ??
+                                            0),
                                   )
                               : null,
                       title: gameOptionController
@@ -79,8 +86,11 @@ class GameOptions extends StatelessWidget {
                                 _routeBuilder(
                                     context,
                                     gameOptionController
-                                            .gameEasyLevels[index].level ??
-                                        1),
+                                            .gameNormalLevels[index].level ??
+                                        1,
+                                    gameOptionController.gameNormalLevels[index]
+                                            .limitTime ??
+                                        0),
                               )
                           : null,
                       title: gameOptionController
@@ -115,7 +125,11 @@ class GameOptions extends StatelessWidget {
                                         context,
                                         gameOptionController
                                                 .gameHardLevels[index].level ??
-                                            1),
+                                            1,
+                                        gameOptionController
+                                                .gameHardLevels[index]
+                                                .limitTime ??
+                                            0),
                                   )
                               : null,
                       title: gameOptionController

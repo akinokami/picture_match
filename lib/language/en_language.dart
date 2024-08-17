@@ -103,6 +103,8 @@ class EnLanguage {
     'continue': 'CONTINUE',
     'restart': 'RESTART',
     'quit': 'QUIT',
-    'level': 'Level'
+    'level': 'Level',
+    'game_over': 'Game Over',
+    'time_out_try_again': 'Time out. Try Again?',
   };
 }

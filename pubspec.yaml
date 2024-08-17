@@ -26,7 +26,7 @@ dependencies:
   confetti: ^0.7.0
   audioplayers: ^5.0.0 
   flutter_switch: ^0.3.2
-  shared_preferences:
+  nice_buttons: ^0.0.3
 
 dev_dependencies:
   flutter_test:

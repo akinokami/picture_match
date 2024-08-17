@@ -64,6 +64,8 @@ class ViLanguage {
     'continue': 'TIẾP TỤC',
     'restart': 'KHỞI ĐỘNG LẠI',
     'quit': 'TỪ BỎ',
-    'level': 'Mức độ'
+    'level': 'Mức độ',
+    'game_over': 'Trò chơi kết thúc',
+    'time_out_try_again': 'Hết giờ rồi. Thử lại?',
   };
 }

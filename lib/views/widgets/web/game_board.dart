@@ -1,32 +1,41 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:picture_match/models/game.dart';
 import 'package:picture_match/views/widgets/memory_card.dart';
 import 'package:picture_match/views/widgets/restart_game.dart';
 import 'package:picture_match/views/widgets/web/game_best_time.dart';
 import 'package:picture_match/views/widgets/web/game_timer.dart';
 
+import '../../../controller/game_option_controller.dart';
+import '../../../utils/constants.dart';
 import '../game_confetti.dart';
 
 class GameBoard extends StatefulWidget {
   const GameBoard({
     required this.gameLevel,
+    required this.gameType,
+    required this.limitTime,
     super.key,
   });
 
   final int gameLevel;
+  final String gameType;
+  final int limitTime;
 
   @override
   State<GameBoard> createState() => _GameBoardState();
 }
 
 class _GameBoardState extends State<GameBoard> {
+  final gameOptionController = Get.put(GameOptionController());
   late Timer timer;
   late Game game;
   late Duration duration;
   int bestTime = 0;
   bool showConfetti = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,16 +45,65 @@ class _GameBoardState extends State<GameBoard> {
     getBestTime();
   }
 
+  // void getBestTime() async {
+  //   SharedPreferences gameSP = await SharedPreferences.getInstance();
+  //   if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') != null) {
+  //     bestTime = gameSP.getInt('${widget.gameLevel.toString()}BestTime')!;
+  //   }
+
+  //   setState(() {});
+  // }
   void getBestTime() async {
     //todo
     // SharedPreferences gameSP = await SharedPreferences.getInstance();
     // if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') != null) {
     //   bestTime = gameSP.getInt('${widget.gameLevel.toString()}BestTime')!;
     // }
+    if (widget.gameType == GameType.easy.name) {
+      var easy = gameOptionController.gameEasyLevels
+          .where((e) => e.level == widget.gameLevel)
+          .firstOrNull;
+      bestTime = easy?.bestTime ?? 0;
+    }
+    if (widget.gameType == GameType.normal.name) {
+      var normal = gameOptionController.gameNormalLevels
+          .where((e) => e.level == widget.gameLevel)
+          .firstOrNull;
+      bestTime = normal?.bestTime ?? 0;
+    }
+    if (widget.gameType == GameType.hard.name) {
+      var hard = gameOptionController.gameHardLevels
+          .where((e) => e.level == widget.gameLevel)
+          .firstOrNull;
+      bestTime = hard?.bestTime ?? 0;
+    }
 
     setState(() {});
   }
 
+  // startTimer() {
+  //   timer = Timer.periodic(const Duration(seconds: 1), (_) async {
+  //     setState(() {
+  //       final seconds = duration.inSeconds + 1;
+  //       duration = Duration(seconds: seconds);
+  //     });
+
+  //     if (game.isGameOver) {
+  //       timer.cancel();
+  //       SharedPreferences gameSP = await SharedPreferences.getInstance();
+  //       if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
+  //           gameSP.getInt('${widget.gameLevel.toString()}BestTime')! >
+  //               duration.inSeconds) {
+  //         gameSP.setInt(
+  //             '${widget.gameLevel.toString()}BestTime', duration.inSeconds);
+  //         setState(() {
+  //           showConfetti = true;
+  //           bestTime = duration.inSeconds;
+  //         });
+  //       }
+  //     }
+  //   });
+  // }
   startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       setState(() {
@@ -53,21 +111,73 @@ class _GameBoardState extends State<GameBoard> {
         duration = Duration(seconds: seconds);
       });
 
+      if (widget.limitTime != 0) {
+        if (duration.inSeconds >= widget.limitTime) {
+          timer.cancel();
+          game.isGameOver = true;
+          print("gameOver");
+          constants.gameOverDialog(() {
+            _resetGame();
+            Navigator.pop(context);
+          });
+        }
+      }
+
       //todo
-      // if (game.isGameOver) {
-      //   timer.cancel();
-      //   SharedPreferences gameSP = await SharedPreferences.getInstance();
-      //   if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
-      //       gameSP.getInt('${widget.gameLevel.toString()}BestTime')! >
-      //           duration.inSeconds) {
-      //     gameSP.setInt(
-      //         '${widget.gameLevel.toString()}BestTime', duration.inSeconds);
-      //     setState(() {
-      //       showConfetti = true;
-      //       bestTime = duration.inSeconds;
-      //     });
-      //   }
-      // }
+      if (game.isGameFinish) {
+        timer.cancel();
+        // SharedPreferences gameSP = await SharedPreferences.getInstance();
+        // if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
+        //     gameSP.getInt('${widget.gameLevel.toString()}BestTime')! >
+        //         duration.inSeconds) {
+        //   gameSP.setInt(
+        //       '${widget.gameLevel.toString()}BestTime', duration.inSeconds);
+        //   setState(() {
+        //     showConfetti = true;
+        //     bestTime = duration.inSeconds;
+        //   });
+        // }
+
+        if (widget.gameType == GameType.easy.name) {
+          var e = gameOptionController.gameEasyLevels
+              .where((e) => e.level == widget.gameLevel)
+              .firstOrNull;
+          if (e?.bestTime == 0 || (e?.bestTime ?? 0) > duration.inSeconds) {
+            gameOptionController.setGameEasy(
+                gameLevel: widget.gameLevel, duration: duration.inSeconds);
+            setState(() {
+              showConfetti = true;
+              bestTime = duration.inSeconds;
+            });
+          }
+        }
+        if (widget.gameType == GameType.normal.name) {
+          var e = gameOptionController.gameNormalLevels
+              .where((e) => e.level == widget.gameLevel)
+              .firstOrNull;
+          if (e?.bestTime == 0 || (e?.bestTime ?? 0) > duration.inSeconds) {
+            gameOptionController.setGameNormal(
+                gameLevel: widget.gameLevel, duration: duration.inSeconds);
+            setState(() {
+              showConfetti = true;
+              bestTime = duration.inSeconds;
+            });
+          }
+        }
+        if (widget.gameType == GameType.hard.name) {
+          var e = gameOptionController.gameEasyLevels
+              .where((e) => e.level == widget.gameLevel)
+              .firstOrNull;
+          if (e?.bestTime == 0 || (e?.bestTime ?? 0) > duration.inSeconds) {
+            gameOptionController.setGameHard(
+                gameLevel: widget.gameLevel, duration: duration.inSeconds);
+            setState(() {
+              showConfetti = true;
+              bestTime = duration.inSeconds;
+            });
+          }
+        }
+      }
     });
   }
 
@@ -115,7 +225,7 @@ class _GameBoardState extends State<GameBoard> {
           top: 12.0,
           right: 24.0,
           child: RestartGame(
-            isGameOver: game.isGameOver,
+            isGameOver: game.isGameFinish,
             pauseGame: () => pauseTimer(),
             restartGame: () => _resetGame(),
             continueGame: () => startTimer(),

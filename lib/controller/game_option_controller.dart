@@ -25,7 +25,7 @@ class GameOptionController extends GetxController {
   void getGameEasy() async {
     var easyData = await box.read(GameType.easy.name);
     if (easyData == null) {
-      List<dynamic> list = jsonDecode(gameLevels);
+      List<dynamic> list = jsonDecode(easyLevels);
       gameEasyLevels.value =
           list.map((json) => GameLevel.fromJson(json)).toList();
       await box.write(GameType.easy.name,
@@ -56,7 +56,7 @@ class GameOptionController extends GetxController {
   void getGameNormal() async {
     var normalData = await box.read(GameType.normal.name);
     if (normalData == null) {
-      List<dynamic> list = jsonDecode(gameLevels);
+      List<dynamic> list = jsonDecode(normalLevels);
       gameNormalLevels.value =
           list.map((json) => GameLevel.fromJson(json)).toList();
       await box.write(GameType.normal.name,
@@ -87,7 +87,7 @@ class GameOptionController extends GetxController {
   void getGameHard() async {
     var hardData = await box.read(GameType.hard.name);
     if (hardData == null) {
-      List<dynamic> list = jsonDecode(gameLevels);
+      List<dynamic> list = jsonDecode(hardLevels);
       gameHardLevels.value =
           list.map((json) => GameLevel.fromJson(json)).toList();
       await box.write(GameType.hard.name,
