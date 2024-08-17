@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:picture_match/controller/game_option_controller.dart';
 import 'package:picture_match/utils/app_theme.dart';
 
 Constants constants = Constants();
