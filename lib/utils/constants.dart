@@ -28,15 +28,15 @@ const Color continueButtonColor = Color.fromRGBO(32, 191, 235, 1);
 const Color restartButtonColor = Color.fromRGBO(243, 181, 45, 1);
 Color quitButtonColor = Colors.green; //Color.fromRGBO(39, 162, 149, 1);
 
-List<Map<String, dynamic>> gameEasyLevels = [
-  {'title': '3 x 4', 'level': 3, 'color': Colors.greenAccent, 'name': '1'},
-  {'title': '4 x 4', 'level': 4, 'color': Colors.greenAccent, 'name': '2'},
-  {'title': '5 x 6', 'level': 5, 'color': Colors.greenAccent, 'name': '3'},
-  {'title': '6 x 6', 'level': 6, 'color': Colors.greenAccent, 'name': '4'},
-  {'title': '7 x 8', 'level': 7, 'color': Colors.greenAccent, 'name': '5'},
-  {'title': '8 x 8', 'level': 8, 'color': Colors.greenAccent, 'name': '6'},
-  {'title': '9 x 10', 'level': 9, 'color': Colors.greenAccent, 'name': '7'},
-];
+String gameLevels = """[
+  {"title": "3 x 4", "level": 3, "name": "1", "playable": true, "bestTime": 0},
+  {"title": "4 x 4", "level": 4, "name": "2", "playable": false, "bestTime": 0},
+  {"title": "5 x 6", "level": 5, "name": "3", "playable": false, "bestTime": 0},
+  {"title": "6 x 6", "level": 6, "name": "4", "playable": false, "bestTime": 0},
+  {"title": "7 x 8", "level": 7, "name": "5", "playable": false, "bestTime": 0},
+  {"title": "8 x 8", "level": 8, "name": "6", "playable": false, "bestTime": 0},
+  {"title": "9 x 10", "level": 9, "name": "7", "playable": false, "bestTime": 0}
+]""";
 
 //const String gameTitle = 'MEMORY MATCH';
 

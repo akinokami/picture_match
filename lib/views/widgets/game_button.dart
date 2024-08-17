@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GameButton extends StatelessWidget {
   const GameButton({
     required this.title,
-    required this.onPressed,
+    this.onPressed,
     required this.color,
     this.height = 40,
     this.width = double.infinity,
@@ -12,7 +12,7 @@ class GameButton extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color color;
   final double height;
   final double width;

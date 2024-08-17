@@ -115,15 +115,9 @@ class _StartUpPageState extends State<StartUpPage>
           child: TabBarView(
             controller: tabController,
             children: [
-              GameOptions(
-                gameLevels: gameEasyLevels,
-              ),
-              GameOptions(
-                gameLevels: gameEasyLevels,
-              ),
-              GameOptions(
-                gameLevels: gameEasyLevels,
-              ),
+              GameOptions(gameType: GameType.easy.name),
+              GameOptions(gameType: GameType.normal.name),
+              GameOptions(gameType: GameType.hard.name),
             ],
           ),
         ),
