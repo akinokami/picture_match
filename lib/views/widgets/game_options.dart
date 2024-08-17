@@ -10,10 +10,13 @@ class GameOptions extends StatelessWidget {
   final String gameType;
   const GameOptions({super.key, required this.gameType});
 
-  static Route<dynamic> _routeBuilder(BuildContext context, int gameLevel) {
+  Route<dynamic> _routeBuilder(BuildContext context, int gameLevel) {
     return MaterialPageRoute(
       builder: (_) {
-        return MemoryMatchPage(gameLevel: gameLevel);
+        return MemoryMatchPage(
+          gameLevel: gameLevel,
+          gameType: gameType,
+        );
       },
     );
   }
@@ -23,43 +26,54 @@ class GameOptions extends StatelessWidget {
     final gameOptionController = Get.put(GameOptionController());
     if (gameType == GameType.easy.name) {
       return Obx(
-        () => ListView.builder(
-            shrinkWrap: true,
-            itemCount: gameOptionController.gameEasyLevels.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GameButton(
-                  onPressed:
-                      gameOptionController.gameEasyLevels[index].playable ==
-                              true
-                          ? () => Navigator.of(context).push(
-                                _routeBuilder(
-                                    context,
-                                    gameOptionController
-                                            .gameEasyLevels[index].level ??
-                                        1),
-                              )
-                          : null, //  (Route<dynamic> route) => false
-                  title:
-                      "${'level'.tr} ${gameOptionController.gameEasyLevels[index].name}",
-                  color: AppTheme.green,
-                  width: 250,
-                ),
-              );
-            }),
+        () => gameOptionController.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: gameOptionController.gameEasyLevels.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GameButton(
+                      onPressed:
+                          gameOptionController.gameEasyLevels[index].playable ==
+                                  true
+                              ? () => Navigator.of(context).push(
+                                    _routeBuilder(
+                                        context,
+                                        gameOptionController
+                                                .gameEasyLevels[index].level ??
+                                            1),
+                                  )
+                              : null,
+                      title: gameOptionController
+                                  .gameEasyLevels[index].bestTime !=
+                              0
+                          ? "${'level'.tr} ${gameOptionController.gameEasyLevels[index].name} - ${gameOptionController.gameEasyLevels[index].bestTime}s"
+                          : "${'level'.tr} ${gameOptionController.gameEasyLevels[index].name}",
+                      color: AppTheme.green,
+                      width: 250,
+                    ),
+                  );
+                }),
       );
     } else if (gameType == GameType.normal.name) {
       return Obx(
-        () => ListView.builder(
-            shrinkWrap: true,
-            itemCount: gameOptionController.gameNormalLevels.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GameButton(
-                  onPressed:
-                      gameOptionController.gameNormalLevels[index].playable ==
+        () => gameOptionController.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: gameOptionController.gameNormalLevels.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GameButton(
+                      onPressed: gameOptionController
+                                  .gameNormalLevels[index].playable ==
                               true
                           ? () => Navigator.of(context).push(
                                 _routeBuilder(
@@ -68,42 +82,52 @@ class GameOptions extends StatelessWidget {
                                             .gameEasyLevels[index].level ??
                                         1),
                               )
-                          : null, //  (Route<dynamic> route) => false
-                  title:
-                      "${'level'.tr} ${gameOptionController.gameNormalLevels[index].name}",
-                  color: AppTheme.green,
-                  width: 250,
-                ),
-              );
-            }),
+                          : null,
+                      title: gameOptionController
+                                  .gameNormalLevels[index].bestTime !=
+                              0
+                          ? "${'level'.tr} ${gameOptionController.gameNormalLevels[index].name} - ${gameOptionController.gameNormalLevels[index].bestTime}s"
+                          : "${'level'.tr} ${gameOptionController.gameNormalLevels[index].name}",
+                      color: AppTheme.green,
+                      width: 250,
+                    ),
+                  );
+                }),
       );
     } else {
       return Obx(
-        () => ListView.builder(
-            shrinkWrap: true,
-            itemCount: gameOptionController.gameHardLevels.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GameButton(
-                  onPressed:
-                      gameOptionController.gameHardLevels[index].playable ==
-                              true
-                          ? () => Navigator.of(context).push(
-                                _routeBuilder(
-                                    context,
-                                    gameOptionController
-                                            .gameHardLevels[index].level ??
-                                        1),
-                              )
-                          : null, //  (Route<dynamic> route) => false
-                  title:
-                      "${'level'.tr} ${gameOptionController.gameHardLevels[index].name}",
-                  color: AppTheme.green,
-                  width: 250,
-                ),
-              );
-            }),
+        () => gameOptionController.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: gameOptionController.gameHardLevels.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GameButton(
+                      onPressed:
+                          gameOptionController.gameHardLevels[index].playable ==
+                                  true
+                              ? () => Navigator.of(context).push(
+                                    _routeBuilder(
+                                        context,
+                                        gameOptionController
+                                                .gameHardLevels[index].level ??
+                                            1),
+                                  )
+                              : null,
+                      title: gameOptionController
+                                  .gameNormalLevels[index].bestTime !=
+                              0
+                          ? "${'level'.tr} ${gameOptionController.gameHardLevels[index].name} - ${gameOptionController.gameHardLevels[index].bestTime}s"
+                          : "${'level'.tr} ${gameOptionController.gameHardLevels[index].name}",
+                      color: AppTheme.green,
+                      width: 250,
+                    ),
+                  );
+                }),
       );
     }
     // return Column(

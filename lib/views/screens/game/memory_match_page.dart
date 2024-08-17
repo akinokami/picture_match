@@ -5,10 +5,12 @@ import 'package:picture_match/views/widgets/web/game_board.dart';
 class MemoryMatchPage extends StatelessWidget {
   const MemoryMatchPage({
     required this.gameLevel,
+    required this.gameType,
     super.key,
   });
 
   final int gameLevel;
+  final String gameType;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class MemoryMatchPage extends StatelessWidget {
             } else {
               return GameBoardMobile(
                 gameLevel: gameLevel,
+                gameType: gameType,
               );
             }
           }),
