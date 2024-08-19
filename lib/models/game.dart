@@ -69,18 +69,26 @@ class Game {
   void onCardPressed(int index) {
     cards[index].state = CardState.visible;
     final List<int> visibleCardIndexes = _getVisibleCardIndexes();
-    if (visibleCardIndexes.length == 2) {
-      final CardItem card1 = cards[visibleCardIndexes[0]];
-      final CardItem card2 = cards[visibleCardIndexes[1]];
-      if (card1.value == card2.value) {
-        card1.state = CardState.guessed;
-        card2.state = CardState.guessed;
-        isGameFinish = _isGameOver();
-      } else {
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          card1.state = CardState.hidden;
-          card2.state = CardState.hidden;
-        });
+    if (visibleCardIndexes.length > 2) {
+      for (int i = 0; i < cards.length; i++) {
+        if (cards[i].state == CardState.visible) {
+          cards[i].state = CardState.hidden;
+        }
+      }
+    } else {
+      if (visibleCardIndexes.length == 2) {
+        final CardItem card1 = cards[visibleCardIndexes[0]];
+        final CardItem card2 = cards[visibleCardIndexes[1]];
+        if (card1.value == card2.value) {
+          card1.state = CardState.guessed;
+          card2.state = CardState.guessed;
+          isGameFinish = _isGameOver();
+        } else {
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            card1.state = CardState.hidden;
+            card2.state = CardState.hidden;
+          });
+        }
       }
     }
   }
