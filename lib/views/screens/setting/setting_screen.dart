@@ -19,7 +19,6 @@ class SettingScreen extends StatelessWidget {
     //  / final settingController = Get.put(SettingController());
     final languageController = Get.put(LanguageController());
     final soundController = Get.put(SoundController());
-    soundController.playSound();
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0,

@@ -127,7 +127,8 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SoundController());
+    final soundController = Get.put(SoundController());
+    soundController.playSound();
     return Scaffold(
       body: SafeArea(
         child: Container(
