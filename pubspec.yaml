@@ -48,4 +48,9 @@ flutter:
     - family: Supreme
       fonts:
         - asset: assets/fonts/SupremeSpike-KVO8D.otf
- 
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.webp"
+  min_sdk_android: 21
