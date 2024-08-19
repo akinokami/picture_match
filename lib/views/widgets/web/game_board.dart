@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:picture_match/models/game.dart';
+import 'package:picture_match/utils/app_theme.dart';
 import 'package:picture_match/views/widgets/memory_card.dart';
 import 'package:picture_match/views/widgets/restart_game.dart';
 import 'package:picture_match/views/widgets/web/game_best_time.dart';
@@ -30,18 +33,25 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> {
   final gameOptionController = Get.put(GameOptionController());
-  late Timer timer;
+  Timer? timer;
   late Game game;
   late Duration duration;
   int bestTime = 0;
   bool showConfetti = false;
+  final int t = 8;
+  final CountDownController countDownController = CountDownController();
+  bool isTimeCount = true;
 
   @override
   void initState() {
     super.initState();
     game = Game(widget.gameLevel);
     duration = const Duration();
-    startTimer();
+    Future.delayed(Duration(seconds: t), () {
+      game.setAllCardsHidden();
+      startTimer();
+      isTimeCount = false;
+    });
     getBestTime();
   }
 
@@ -113,7 +123,7 @@ class _GameBoardState extends State<GameBoard> {
 
       if (widget.limitTime != 0) {
         if (duration.inSeconds >= widget.limitTime) {
-          timer.cancel();
+          timer?.cancel();
           game.isGameOver = true;
           print("gameOver");
           constants.gameOverDialog(() {
@@ -125,7 +135,7 @@ class _GameBoardState extends State<GameBoard> {
 
       //todo
       if (game.isGameFinish) {
-        timer.cancel();
+        timer?.cancel();
         // SharedPreferences gameSP = await SharedPreferences.getInstance();
         // if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
         //     gameSP.getInt('${widget.gameLevel.toString()}BestTime')! >
@@ -182,21 +192,26 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   pauseTimer() {
-    timer.cancel();
+    timer?.cancel();
   }
 
   void _resetGame() {
     game.resetGame();
     setState(() {
-      timer.cancel();
+      isTimeCount = true;
+      timer?.cancel();
       duration = const Duration();
-      startTimer();
+      Future.delayed(Duration(seconds: t), () {
+        game.setAllCardsHidden();
+        startTimer();
+        isTimeCount = false;
+      });
     });
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -224,12 +239,58 @@ class _GameBoardState extends State<GameBoard> {
         Positioned(
           top: 12.0,
           right: 24.0,
-          child: RestartGame(
-            isGameOver: game.isGameFinish,
-            pauseGame: () => pauseTimer(),
-            restartGame: () => _resetGame(),
-            continueGame: () => startTimer(),
-          ),
+          child: isTimeCount
+              ? CircularCountDownTimer(
+                  duration: t,
+                  initialDuration: 0,
+                  controller: countDownController,
+                  height: 35.w,
+                  width: 35.w,
+                  ringColor: AppTheme.premiumColor2,
+                  ringGradient: null,
+                  fillColor: Colors.white,
+                  fillGradient: null,
+                  backgroundColor: AppTheme.green,
+                  backgroundGradient: null,
+                  strokeWidth: 4.w,
+                  strokeCap: StrokeCap.round,
+                  textStyle: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textFormat: CountdownTextFormat.S,
+                  isReverse: true,
+                  isReverseAnimation: true,
+                  isTimerTextShown: true,
+                  autoStart: true,
+                  onStart: () {
+                    debugPrint('Countdown Started');
+                  },
+                  onComplete: () {
+                    debugPrint('Countdown Ended');
+                    setState(() {
+                      isTimeCount = false;
+                    });
+                  },
+                  onChange: (String timeStamp) {
+                    debugPrint('Countdown Changed $timeStamp');
+                  },
+                  timeFormatterFunction: (defaultFormatterFunction, duration) {
+                    if (duration.inSeconds == 0) {
+                      return "0";
+                    } else {
+                      return Function.apply(
+                          defaultFormatterFunction, [duration]);
+                    }
+                  },
+                )
+              : RestartGame(
+                  isGameOver: game.isGameFinish,
+                  pauseGame: () => pauseTimer(),
+                  restartGame: () => _resetGame(),
+                  continueGame: () => startTimer(),
+                ),
         ),
         Positioned(
           bottom: 12.0,

@@ -27,6 +27,7 @@ dependencies:
   audioplayers: ^5.0.0 
   flutter_switch: ^0.3.2
   nice_buttons: ^0.0.3
+  circular_countdown_timer: ^0.2.3
 
 dev_dependencies:
   flutter_test:

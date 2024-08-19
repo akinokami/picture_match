@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -34,20 +35,24 @@ class GameBoardMobile extends StatefulWidget {
 
 class _GameBoardMobileState extends State<GameBoardMobile> {
   final gameOptionController = Get.put(GameOptionController());
-  late Timer timer;
+  Timer? timer;
   late Game game;
   late Duration duration;
   int bestTime = 0;
   bool showConfetti = false;
+  final int t = 8;
+  final CountDownController countDownController = CountDownController();
+  bool isTimeCount = true;
 
   @override
   void initState() {
     super.initState();
     game = Game(widget.gameLevel);
     duration = const Duration();
-    Future.delayed(const Duration(seconds: 7), () {
+    Future.delayed(Duration(seconds: t), () {
       game.setAllCardsHidden();
       startTimer();
+      isTimeCount = false;
     });
     getBestTime();
   }
@@ -90,7 +95,7 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
 
       if (widget.limitTime != 0) {
         if (duration.inSeconds >= widget.limitTime) {
-          timer.cancel();
+          timer?.cancel();
           game.isGameOver = true;
           print("gameOver");
           constants.gameOverDialog(() {
@@ -102,7 +107,7 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
 
       //todo
       if (game.isGameFinish) {
-        timer.cancel();
+        timer?.cancel();
         // SharedPreferences gameSP = await SharedPreferences.getInstance();
         // if (gameSP.getInt('${widget.gameLevel.toString()}BestTime') == null ||
         //     gameSP.getInt('${widget.gameLevel.toString()}BestTime')! >
@@ -159,24 +164,26 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
   }
 
   pauseTimer() {
-    timer.cancel();
+    timer?.cancel();
   }
 
   void _resetGame() {
     game.resetGame();
     setState(() {
-      timer.cancel();
+      isTimeCount = true;
+      timer?.cancel();
       duration = const Duration();
-      Future.delayed(const Duration(seconds: 7), () {
+      Future.delayed(Duration(seconds: t), () {
         game.setAllCardsHidden();
         startTimer();
+        isTimeCount = false;
       });
     });
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -247,13 +254,60 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
                           ],
                         ),
                       ),
-                      RestartGame(
-                        isGameOver: game.isGameFinish,
-                        pauseGame: () => pauseTimer(),
-                        restartGame: () => _resetGame(),
-                        continueGame: () => startTimer(),
-                        color: AppTheme.green, //Colors.amberAccent[700]!,
-                      ),
+                      isTimeCount
+                          ? CircularCountDownTimer(
+                              duration: t,
+                              initialDuration: 0,
+                              controller: countDownController,
+                              height: 35.w,
+                              width: 35.w,
+                              ringColor: AppTheme.premiumColor2,
+                              ringGradient: null,
+                              fillColor: Colors.white,
+                              fillGradient: null,
+                              backgroundColor: AppTheme.green,
+                              backgroundGradient: null,
+                              strokeWidth: 4.w,
+                              strokeCap: StrokeCap.round,
+                              textStyle: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textFormat: CountdownTextFormat.S,
+                              isReverse: true,
+                              isReverseAnimation: true,
+                              isTimerTextShown: true,
+                              autoStart: true,
+                              onStart: () {
+                                debugPrint('Countdown Started');
+                              },
+                              onComplete: () {
+                                debugPrint('Countdown Ended');
+                                // setState(() {
+                                isTimeCount = false;
+                                //});
+                              },
+                              onChange: (String timeStamp) {
+                                debugPrint('Countdown Changed $timeStamp');
+                              },
+                              timeFormatterFunction:
+                                  (defaultFormatterFunction, duration) {
+                                if (duration.inSeconds == 0) {
+                                  return "0";
+                                } else {
+                                  return Function.apply(
+                                      defaultFormatterFunction, [duration]);
+                                }
+                              },
+                            )
+                          : RestartGame(
+                              isGameOver: game.isGameFinish,
+                              pauseGame: () => pauseTimer(),
+                              restartGame: () => _resetGame(),
+                              continueGame: () => startTimer(),
+                              color: AppTheme.green, //Colors.amberAccent[700]!,
+                            ),
                       GameTimerMobile(
                         time: duration,
                       ),
