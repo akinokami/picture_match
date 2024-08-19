@@ -7,7 +7,7 @@ class CardItem {
     required this.value,
     required this.icon,
     required this.color,
-    this.state = CardState.hidden,
+    this.state = CardState.visible,
   });
 
   final int value;

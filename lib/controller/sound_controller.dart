@@ -10,7 +10,6 @@ class SoundController extends GetxController {
   @override
   void onInit() {
     getMute();
-
     super.onInit();
   }
 

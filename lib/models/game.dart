@@ -60,6 +60,12 @@ class Game {
     }
   }
 
+  void setAllCardsHidden() {
+    for (int c = 0; c < cards.length; c++) {
+      cards[c].state = CardState.hidden;
+    }
+  }
+
   void resetGame() {
     generateCards();
     isGameFinish = false;

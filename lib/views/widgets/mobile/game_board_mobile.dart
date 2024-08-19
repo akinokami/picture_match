@@ -45,7 +45,10 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
     super.initState();
     game = Game(widget.gameLevel);
     duration = const Duration();
-    startTimer();
+    Future.delayed(const Duration(seconds: 7), () {
+      game.setAllCardsHidden();
+      startTimer();
+    });
     getBestTime();
   }
 
@@ -164,7 +167,10 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
     setState(() {
       timer.cancel();
       duration = const Duration();
-      startTimer();
+      Future.delayed(const Duration(seconds: 7), () {
+        game.setAllCardsHidden();
+        startTimer();
+      });
     });
   }
 
