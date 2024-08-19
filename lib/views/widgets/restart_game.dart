@@ -55,6 +55,8 @@ class RestartGame extends StatelessWidget {
       onTap: () =>
           isGameOver ? navigateback(context) : showGameControls(context),
       child: Container(
+          height: 35.w,
+          width: 35.w,
           decoration: BoxDecoration(
             color: color,
             border: Border.all(
@@ -67,7 +69,7 @@ class RestartGame extends StatelessWidget {
             isGameOver
                 ? Icons.keyboard_double_arrow_right
                 : Icons.pause_circle_filled,
-            size: 40,
+            size: 18.sp,
             color: Colors.white,
           )
           // IconButton(

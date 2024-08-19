@@ -71,6 +71,7 @@ class CustomGameButton extends StatelessWidget {
               child: Icon(
                 icon ?? Icons.abc,
                 color: iconColor ?? Colors.black,
+                size: iconSize ?? 18.sp,
               ),
             ),
             Visibility(
@@ -78,7 +79,7 @@ class CustomGameButton extends StatelessWidget {
               child: CustomText(
                 text: text ?? '',
                 textColor: textColor,
-                size: fontSize,
+                size: fontSize ?? 12.sp,
               ),
             ),
           ],
