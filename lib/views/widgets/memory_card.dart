@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:picture_match/models/card_item.dart';
 
+import '../../utils/app_theme.dart';
+
 class MemoryCard extends StatelessWidget {
   const MemoryCard({
     required this.card,
@@ -36,7 +38,8 @@ class MemoryCard extends StatelessWidget {
         color:
             card.state == CardState.visible || card.state == CardState.guessed
                 ? card.color
-                : Colors.grey,
+                : AppTheme.greyDark,
+        //  : const Color.fromARGB(255, 5, 45, 78),
         child: Center(
           child: card.state == CardState.hidden
               ? null

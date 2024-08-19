@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:picture_match/utils/app_theme.dart';
 import 'package:picture_match/views/widgets/game_controls_bottomsheet.dart';
 
 import '../screens/game/startup_page.dart';
@@ -50,14 +52,43 @@ class RestartGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      color: color,
-      icon: (isGameOver)
-          ? const Icon(Icons.replay_circle_filled)
-          : const Icon(Icons.pause_circle_filled),
-      iconSize: 40,
-      onPressed: () =>
+    return InkWell(
+      onTap: () =>
           isGameOver ? navigateback(context) : showGameControls(context),
+      child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            border: Border.all(
+              width: 3.w,
+              color: AppTheme.premiumColor2,
+            ),
+            borderRadius: BorderRadius.circular(100.r),
+          ),
+          child: Icon(
+            isGameOver ? Icons.replay_circle_filled : Icons.pause_circle_filled,
+            size: 40,
+            color: Colors.white,
+          )
+          // IconButton(
+
+          //   icon: (isGameOver)
+          //       ? const Icon(Icons.replay_circle_filled)
+          //       : const Icon(Icons.pause_circle_filled),
+          //   iconSize: 40,
+          //   onPressed: () =>
+          //       isGameOver ? navigateback(context) : showGameControls(context),
+          // ),
+          ),
     );
   }
 }
+
+// IconButton(
+//         color: color,
+//         icon: (isGameOver)
+//             ? const Icon(Icons.replay_circle_filled)
+//             : const Icon(Icons.pause_circle_filled),
+//         iconSize: 40,
+//         onPressed: () =>
+//             isGameOver ? navigateback(context) : showGameControls(context),
+//       ),

@@ -68,6 +68,7 @@ class ViLanguage {
     'game_over': 'Trò chơi kết thúc',
     'time_out_try_again': 'Hết giờ rồi. Thử lại?',
     'yes': 'Đúng',
-    'no': 'Không'
+    'no': 'Không',
+    'best_time': 'Tốt nhất',
   };
 }

@@ -14,6 +14,7 @@ import 'package:picture_match/views/widgets/restart_game.dart';
 
 import '../../../models/game.dart';
 import '../../../utils/app_theme.dart';
+import '../custom_game_button.dart';
 
 class GameBoardMobile extends StatefulWidget {
   const GameBoardMobile({
@@ -178,83 +179,110 @@ class _GameBoardMobileState extends State<GameBoardMobile> {
     final aspectRatio = MediaQuery.of(context).size.aspectRatio;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppTheme.white,
-        iconTheme: const IconThemeData(color: AppTheme.black),
-        centerTitle: true,
-        title: CustomText(
-          text: ''.tr,
-          size: 15.sp,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: AppTheme.white,
+      //   iconTheme: const IconThemeData(color: AppTheme.black),
+      //   centerTitle: true,
+      //   title: CustomText(
+      //     text: ''.tr,
+      //     size: 15.sp,
+      //     fontWeight: FontWeight.w500,
+      //   ),
+      // ),
       body: SafeArea(
         child: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomCard(
-                      width: 1.sw * 0.40,
-                      widget: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(text: 'best_time'.tr),
-                          CustomText(
-                            text: Duration(seconds: bestTime)
-                                .toString()
-                                .split('.')
-                                .first
-                                .padLeft(8, "0"),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RestartGame(
-                      isGameOver: game.isGameFinish,
-                      pauseGame: () => pauseTimer(),
-                      restartGame: () => _resetGame(),
-                      continueGame: () => startTimer(),
-                      color: AppTheme.green, //Colors.amberAccent[700]!,
-                    ),
-                    GameTimerMobile(
-                      time: duration,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                // RestartGame(
-                //   isGameOver: game.isGameFinish,
-                //   pauseGame: () => pauseTimer(),
-                //   restartGame: () => _resetGame(),
-                //   continueGame: () => startTimer(),
-                //   color: Colors.amberAccent[700]!,
-                // ),
-                // GameTimerMobile(
-                //   time: duration,
-                // ),
-                Expanded(
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: game.gridSize,
-                    childAspectRatio: aspectRatio * 2,
-                    children: List.generate(game.cards.length, (index) {
-                      return MemoryCard(
-                        index: index,
-                        card: game.cards[index],
-                        onCardPressed: game.onCardPressed,
-                      );
-                    }),
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/images/bg.webp",
                   ),
+                  fit: BoxFit.cover,
                 ),
-                // GameBestTimeMobile(
-                //   bestTime: bestTime,
-                // ),
-              ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.w),
+                    child: Row(
+                      children: [
+                        CustomGameButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          height: 35.w,
+                          width: 35.w,
+                          icon: Icons.arrow_back,
+                          iconColor: AppTheme.white,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomCard(
+                        width: 1.sw * 0.40,
+                        widget: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: 'best_time'.tr),
+                            CustomText(
+                              text: Duration(seconds: bestTime)
+                                  .toString()
+                                  .split('.')
+                                  .first
+                                  .padLeft(8, "0"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RestartGame(
+                        isGameOver: game.isGameFinish,
+                        pauseGame: () => pauseTimer(),
+                        restartGame: () => _resetGame(),
+                        continueGame: () => startTimer(),
+                        color: AppTheme.green, //Colors.amberAccent[700]!,
+                      ),
+                      GameTimerMobile(
+                        time: duration,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
+                  // RestartGame(
+                  //   isGameOver: game.isGameFinish,
+                  //   pauseGame: () => pauseTimer(),
+                  //   restartGame: () => _resetGame(),
+                  //   continueGame: () => startTimer(),
+                  //   color: Colors.amberAccent[700]!,
+                  // ),
+                  // GameTimerMobile(
+                  //   time: duration,
+                  // ),
+                  Expanded(
+                    child: GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: game.gridSize,
+                      childAspectRatio: aspectRatio * 2,
+                      children: List.generate(game.cards.length, (index) {
+                        return MemoryCard(
+                          index: index,
+                          card: game.cards[index],
+                          onCardPressed: game.onCardPressed,
+                        );
+                      }),
+                    ),
+                  ),
+                  // GameBestTimeMobile(
+                  //   bestTime: bestTime,
+                  // ),
+                ],
+              ),
             ),
             showConfetti ? const GameConfetti() : const SizedBox(),
           ],
