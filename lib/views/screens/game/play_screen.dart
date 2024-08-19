@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:picture_match/views/screens/game/startup_page.dart';
 import 'package:picture_match/views/screens/setting/setting_screen.dart';
-import 'package:picture_match/views/widgets/game_button.dart';
+import 'package:picture_match/views/widgets/custom_game_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../controller/sound_controller.dart';
@@ -129,55 +129,67 @@ class _PlayScreenState extends State<PlayScreen> {
   Widget build(BuildContext context) {
     Get.put(SoundController());
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(10.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 50.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/images/bg.webp",
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () {
-                    exit(0);
-                  },
-                  icon: Icon(
-                    Icons.close,
-                    size: 30.sp,
-                    color: AppTheme.red,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomGameButton(
+                      onTap: () {
+                        exit(0);
+                      },
+                      height: 35.w,
+                      width: 35.w,
+                      icon: Icons.close,
+                      iconColor: AppTheme.red,
+                    ),
+                    CustomGameButton(
+                      onTap: () {
+                        Get.to(() => const SettingScreen());
+                      },
+                      height: 35.w,
+                      width: 35.w,
+                      icon: Icons.settings,
+                      iconColor: AppTheme.white,
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    Get.to(() => const SettingScreen());
+                SizedBox(height: 120.h),
+                Image.asset(
+                  'assets/images/logo.webp',
+                  height: 80.h,
+                ),
+                SizedBox(height: 30.h),
+                CustomText(
+                  text: 'picture_match'.tr,
+                  size: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                SizedBox(height: 40.h),
+                CustomGameButton(
+                  onTap: () {
+                    Get.to(() => const StartUpPage());
                   },
-                  icon: Icon(
-                    Icons.settings,
-                    size: 30.sp,
-                    color: AppTheme.green,
-                  ),
-                )
+                  width: 0.2.sh,
+                  text: 'play'.tr,
+                  textColor: AppTheme.white,
+                ),
               ],
             ),
-            SizedBox(height: 120.h),
-            FlutterLogo(
-              size: 80.sp,
-            ),
-            SizedBox(height: 30.h),
-            CustomText(
-              text: 'picture_match'.tr,
-              size: 16.sp,
-              fontWeight: FontWeight.w500,
-            ),
-            SizedBox(height: 40.h),
-            GameButton(
-                onPressed: () {
-                  Get.to(() => const StartUpPage());
-                },
-                title: 'play'.tr,
-                color: AppTheme.green)
-          ],
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:picture_match/controller/sound_controller.dart';
 import 'package:picture_match/views/screens/setting/change_language.dart';
+import 'package:picture_match/views/widgets/custom_game_button.dart';
 import '../../../controller/language_controller.dart';
 import '../../../utils/app_theme.dart';
 import '../../widgets/custom_card.dart';
@@ -19,22 +20,57 @@ class SettingScreen extends StatelessWidget {
     final languageController = Get.put(LanguageController());
     final soundController = Get.put(SoundController());
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppTheme.white,
-          iconTheme: const IconThemeData(color: AppTheme.black),
-          centerTitle: true,
-          title: CustomText(
-            text: 'settings'.tr,
-            size: 15.sp,
-            fontWeight: FontWeight.w500,
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   backgroundColor: AppTheme.white,
+        //   iconTheme: const IconThemeData(color: AppTheme.black),
+        //   centerTitle: true,
+        //   title: CustomText(
+        //     text: 'settings'.tr,
+        //     size: 15.sp,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
+        body: SafeArea(
+      child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/images/bg.webp",
+            ),
+            fit: BoxFit.cover,
           ),
         ),
-        body: Padding(
+        child: Padding(
           padding: EdgeInsets.all(10.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: EdgeInsets.all(10.w),
+                child: Row(
+                  children: [
+                    CustomGameButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      height: 35.w,
+                      width: 35.w,
+                      icon: Icons.arrow_back,
+                      iconColor: AppTheme.white,
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    CustomText(
+                      text: 'settings'.tr,
+                      size: 15.sp,
+                      fontWeight: FontWeight.w500,
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10.h),
               CustomText(text: 'general'.tr),
               SizedBox(height: 5.h),
               GestureDetector(
@@ -165,6 +201,8 @@ class SettingScreen extends StatelessWidget {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 }
