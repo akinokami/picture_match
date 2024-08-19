@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:picture_match/utils/app_theme.dart';
 import 'package:picture_match/views/widgets/game_controls_bottomsheet.dart';
 
-import '../screens/game/startup_page.dart';
-
 class RestartGame extends StatelessWidget {
   const RestartGame({
     required this.isGameOver,
@@ -44,10 +42,11 @@ class RestartGame extends StatelessWidget {
   }
 
   void navigateback(BuildContext context) {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) {
-      return const StartUpPage();
-    }), (Route<dynamic> route) => false);
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (BuildContext context) {
+    //   return const StartUpPage();
+    // }), (Route<dynamic> route) => false);
+    Navigator.pop(context);
   }
 
   @override
@@ -65,7 +64,9 @@ class RestartGame extends StatelessWidget {
             borderRadius: BorderRadius.circular(100.r),
           ),
           child: Icon(
-            isGameOver ? Icons.replay_circle_filled : Icons.pause_circle_filled,
+            isGameOver
+                ? Icons.keyboard_double_arrow_right
+                : Icons.pause_circle_filled,
             size: 40,
             color: Colors.white,
           )
