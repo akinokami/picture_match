@@ -176,7 +176,7 @@ class _GameBoardState extends State<GameBoard> {
           }
         }
         if (widget.gameType == GameType.hard.name) {
-          var e = gameOptionController.gameEasyLevels
+          var e = gameOptionController.gameHardLevels
               .where((e) => e.level == widget.gameLevel)
               .firstOrNull;
           if (e?.bestTime == 0 || (e?.bestTime ?? 0) > duration.inSeconds) {

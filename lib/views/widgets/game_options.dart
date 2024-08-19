@@ -133,7 +133,7 @@ class GameOptions extends StatelessWidget {
                                   )
                               : null,
                       title: gameOptionController
-                                  .gameNormalLevels[index].bestTime !=
+                                  .gameHardLevels[index].bestTime !=
                               0
                           ? "${'level'.tr} ${gameOptionController.gameHardLevels[index].name} - ${gameOptionController.gameHardLevels[index].bestTime}s"
                           : "${'level'.tr} ${gameOptionController.gameHardLevels[index].name}",
