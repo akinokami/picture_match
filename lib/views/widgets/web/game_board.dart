@@ -116,11 +116,12 @@ class _GameBoardState extends State<GameBoard> {
   // }
   startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
-      setState(() {
-        final seconds = duration.inSeconds + 1;
-        duration = Duration(seconds: seconds);
-      });
-
+      if (mounted) {
+        setState(() {
+          final seconds = duration.inSeconds + 1;
+          duration = Duration(seconds: seconds);
+        });
+      }
       if (widget.limitTime != 0) {
         if (duration.inSeconds >= widget.limitTime) {
           timer?.cancel();
@@ -269,9 +270,7 @@ class _GameBoardState extends State<GameBoard> {
                   },
                   onComplete: () {
                     debugPrint('Countdown Ended');
-                    setState(() {
-                      isTimeCount = false;
-                    });
+                    isTimeCount = false;
                   },
                   onChange: (String timeStamp) {
                     debugPrint('Countdown Changed $timeStamp');
