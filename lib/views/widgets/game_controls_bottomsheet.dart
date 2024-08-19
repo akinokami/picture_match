@@ -3,9 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:picture_match/utils/app_theme.dart';
 import 'package:picture_match/views/widgets/custom_game_button.dart';
-import 'package:picture_match/views/widgets/game_button.dart';
-
-import '../../utils/constants.dart';
 
 class GameControlsBottomSheet extends StatelessWidget {
   const GameControlsBottomSheet({
