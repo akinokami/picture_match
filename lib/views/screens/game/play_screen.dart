@@ -154,7 +154,10 @@ class _PlayScreenState extends State<PlayScreen> {
                       height: 35.w,
                       width: 35.w,
                       icon: Icons.close,
-                      iconColor: AppTheme.red,
+                      iconColor: AppTheme.white,
+                      color1: Colors.red,
+                      color2: Colors.red.shade300,
+                      color3: Colors.red,
                     ),
                     CustomGameButton(
                       onTap: () {
