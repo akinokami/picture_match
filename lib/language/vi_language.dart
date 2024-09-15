@@ -70,5 +70,6 @@ class ViLanguage {
     'yes': 'Đúng',
     'no': 'Không',
     'best_time': 'Tốt nhất',
+    'sound': 'Âm thanh'
   };
 }

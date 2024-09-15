@@ -105,35 +105,43 @@ class ChangeLanguageScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Obx(
-                    //   () => GestureDetector(
-                    //     onTap: () {
-                    //       languageController.changeLanguage("zh", "CN");
-                    //     },
-                    //     child: Card(
-                    //       color: cardColor,
-                    //       child: ListTile(
-                    //         leading: Image.asset(
-                    //           "assets/images/china.webp",
-                    //           width: 20.w,
-                    //           height: 20.h,
-                    //         ),
-                    //         title: CustomText(
-                    //           text: "中国人",
-                    //           //color: lightWhiteColor,
-                    //         ),
-                    //         trailing: Icon(
-                    //           languageController.language.value == "zh"
-                    //               ? Icons.check_circle
-                    //               : Icons.check_circle_outline,
-                    //           color: languageController.language.value == "zh"
-                    //               ? secondaryColor
-                    //               : greyColor,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Obx(
+                      () => GestureDetector(
+                        onTap: () {
+                          languageController.changeLanguage("zh", "CN");
+                        },
+                        child: CustomCard(
+                          widget: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/china.webp",
+                                    width: 20.w,
+                                    height: 20.h,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  const CustomText(
+                                    text: "中文",
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                languageController.language.value == "zh"
+                                    ? Icons.check_circle
+                                    : Icons.check_circle_outline,
+                                color: languageController.language.value == "zh"
+                                    ? AppTheme.green
+                                    : AppTheme.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     Obx(
                       () => GestureDetector(
                         onTap: () {

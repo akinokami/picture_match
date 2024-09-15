@@ -21,8 +21,11 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadHtmlString(
-          Global.language == "vi" ? Global.policyHtmlVi : Global.policyHtmlEn);
+      ..loadHtmlString(Global.language == "zh"
+          ? Global.policyZh
+          : Global.language == "vi"
+              ? Global.policyHtmlVi
+              : Global.policyHtmlEn);
   }
 
   @override

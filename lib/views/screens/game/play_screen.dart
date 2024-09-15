@@ -54,9 +54,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                   width: double.infinity,
                                   child: WebViewWidget(
                                       controller: WebViewController()
-                                        ..loadHtmlString(Global.language == "vi"
-                                            ? Global.policyHtmlVi
-                                            : Global.policyHtmlEn))),
+                                        ..loadHtmlString(Global.language == "zh"
+                                            ? Global.policyZh
+                                            : Global.language == "vi"
+                                                ? Global.policyHtmlVi
+                                                : Global.policyHtmlEn))),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,

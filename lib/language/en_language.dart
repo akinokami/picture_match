@@ -109,5 +109,6 @@ class EnLanguage {
     'yes': 'Yes',
     'no': 'No',
     'best_time': 'Best Time',
+    'sound': 'Sound'
   };
 }
